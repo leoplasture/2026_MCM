@@ -1,0 +1,65 @@
+---
+title: "Problem_C"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# import data
+raw_data <- read_csv("2026_MCM_Problem_C_Data.csv")
+raw_data %>% head()
+```
+```{r}
+clean_data <- raw_data %>%
+  # ---------------------------------------------------------
+  # 步骤 1: 处理基础文本特征
+  # ---------------------------------------------------------
+  mutate(
+    eliminated_week = str_extract(results, "\\d+"), 
+    eliminated_week = as.numeric(eliminated_week),
+    is_winner = str_detect(results, "Winner"),
+    industry_grouped = fct_lump(celebrity_industry, n = 5) 
+  ) %>%
+  
+  # ---------------------------------------------------------
+  # [修正点] 步骤 1.5: 强制类型统一
+  # ---------------------------------------------------------
+  # 将所有以 "week" 开头的列强制转换为字符型，防止 double 和 character 冲突
+  mutate(across(starts_with("week"), as.character)) %>%
+  
+  # ---------------------------------------------------------
+  # 步骤 2: 宽表变长表
+  # ---------------------------------------------------------
+  pivot_longer(
+    cols = starts_with("week"),
+    names_to = c("week_num", "judge_num"),
+    names_pattern = "week(\\d+)_judge(\\d+)_score",
+    values_to = "raw_score"
+  ) %>%
+  
+  # ---------------------------------------------------------
+  # 步骤 3: 清洗分数与计算统计量
+  # ---------------------------------------------------------
+  mutate(
+    week_num = as.numeric(week_num),
+    # 这一步会自动把 "N/A" 或其他非数字文本转为 NA，并可能会报警告，这是正常的
+    raw_score = as.numeric(raw_score) 
+  ) %>%
+  
+  # 移除无效数据
+  filter(!is.na(raw_score)) %>%
+  
+  group_by(celebrity_name, season, week_num) %>%
+  summarise(
+    total_week_score = sum(raw_score),
+    active_judges = n(), 
+    max_possible_score = active_judges * 10, 
+    score_ratio = total_week_score / max_possible_score, 
+    placement = first(placement),
+    results = first(results),
+    industry = first(industry_grouped),
+    age = first(celebrity_age_during_season),
+    .groups = "drop"
+  )
+```
+
