@@ -102,8 +102,8 @@ class FinalFanVoteEstimator:
         constraint_penalty = 0.0
         constraint_violations = 0
 
-        for week in self.elimination_weeks:
-            violation = self._compute_constraint_violation(week, V)
+        for i in range(len(self.elimination_weeks)):
+            violation = self._compute_constraint_violation(i, V)
             if violation > self.epsilon:
                 # 指数惩罚：对任何违反都非常敏感
                 constraint_penalty += np.exp(5.0 * violation) - 1.0
@@ -130,12 +130,9 @@ class FinalFanVoteEstimator:
 
         return total
 
-    def _compute_constraint_violation(self, week, V):
+    def _compute_constraint_violation(self, elim_idx, V):
         """计算约束违反，现在要求严格满足"""
-        if week not in self.elimination_weeks:
-            return 0.0
-
-        elim_idx = self.elimination_weeks.index(week)
+        week = self.elimination_weeks[elim_idx]
         e_t = self.e[elim_idx]
 
         active = self._active_contestants(week)
@@ -202,13 +199,29 @@ class FinalFanVoteEstimator:
                 if self.X[i, t] == 0 and self.X[i, t - 1] > 0:
                     self.X[i, t] = self.X[i, t - 1]
 
-        # 简单标准化：减去均值，除以标准差
-        for t in range(self.T):
-            week_scores = self.X[:, t]
-            if np.std(week_scores) > 1e-10:
-                self.X[:, t] = (week_scores - np.mean(week_scores)) / np.std(
-                    week_scores
-                )
+        # 根据方法选择标准化方式
+        if self.method == "rank":
+            # 简单标准化：减去均值，除以标准差
+            for t in range(self.T):
+                week_scores = self.X[:, t]
+                if np.std(week_scores) > 1e-10:
+                    self.X[:, t] = (week_scores - np.mean(week_scores)) / np.std(
+                        week_scores
+                    )
+        else:  # 'percent'
+            # 归一化到[0,1]区间，保持非负性，避免Z-score导致求和为0的问题
+            for t in range(self.T):
+                week_scores = self.X[:, t]
+                # 减去最小值，确保非负（如果有负值的话），然后除以范围
+                # 或者简单地除以最大值（如果数据本身是非负的）
+                # 考虑到评委打分通常非负，且我们希望保持"分数"的含义
+                # 使用最大值归一化比较安全
+                max_val = np.max(week_scores)
+                if max_val > 1e-10:
+                    self.X[:, t] = week_scores / max_val
+                elif np.max(np.abs(week_scores)) < 1e-10:
+                    # 全为0的情况
+                    pass
 
     def _build_active_cache(self):
         for week in range(self.T):
@@ -268,8 +281,8 @@ class FinalFanVoteEstimator:
         V = self.fan_votes_
 
         violations = []
-        for week in self.elimination_weeks:
-            violation = self._compute_constraint_violation(week, V)
+        for i in range(len(self.elimination_weeks)):
+            violation = self._compute_constraint_violation(i, V)
             violations.append(violation)
 
         satisfied = sum(1 for v in violations if v <= self.epsilon)
@@ -714,7 +727,15 @@ def analyze_all_seasons():
         print(f"ANALYZING SEASON {season} ({len(all_results)+1}/{len(all_seasons)})")
         print("=" * 80)
 
-        result = analyze_with_final_model(season)
+        result = None
+        try:
+            result = analyze_with_final_model(season)
+        except Exception as e:
+            print(f"ERROR processing season {season}: {e}")
+            import traceback
+
+            traceback.print_exc()
+
         if result:
             all_results.append(result)
 
