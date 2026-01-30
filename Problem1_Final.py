@@ -443,18 +443,21 @@ def analyze_with_final_model(season_num):
     # 评估
     results = estimator.evaluate()
 
+    # 显示投票估计
+    V = estimator.fan_votes_
+
     print(f"\nResults:")
     print(f"  Satisfaction rate: {results['satisfaction_rate']:.1f}%")
     print(f"  Average violation: {results['avg_violation']:.6f}")
     print(f"  Maximum violation: {results['max_violation']:.6f}")
 
-    print("\nViolation by week:")
+    # 修复：只显示有淘汰的周的违反情况
+    print("\nViolation by elimination week:")
     for i, week in enumerate(elimination_weeks):
         violation = results["violations"][i]
-        print(f"  Week {week + 1}: {violation:.6f}")
+        actual_week = week + 1  # 转换为1-based
+        print(f"  Week {actual_week}: {violation:.6f}")
 
-    # 显示投票估计
-    V = estimator.fan_votes_
     print(f"\nTop 5 estimated fan support (Week 1):")
     week1 = V[:, 0]
     top_idx = np.argsort(-week1)[:5]
