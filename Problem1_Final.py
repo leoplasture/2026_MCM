@@ -283,6 +283,21 @@ class FinalFanVoteEstimator:
         }
 
 
+def get_season_method(season_num):
+    """
+    根据赛季号确定使用的计算方法
+    """
+    if season_num in [1, 2]:
+        return "rank"
+    elif 3 <= season_num <= 27:
+        return "percent"
+    elif 28 <= season_num <= 34:
+        return "rank"
+    else:
+        # 默认使用rank
+        return "rank"
+
+
 def enhanced_prepare_season_data(season_num, raw_data, debug=False):
     """
     增强的数据准备函数 - 基于评委N/A情况判断停播
@@ -580,6 +595,9 @@ def analyze_with_final_model(season_num):
     print(f"FINAL MODEL - SEASON {season_num}")
     print("=" * 60)
 
+    method = get_season_method(season_num)
+    print(f"Using {method.upper()} method for season {season_num}")
+
     # 准备数据（使用之前的数据准备函数）
 
     X, e, names, elimination_weeks = enhanced_prepare_season_data(
@@ -595,7 +613,7 @@ def analyze_with_final_model(season_num):
 
     # 创建和拟合模型
     estimator = FinalFanVoteEstimator(
-        method="rank",
+        method=method,
         lambda_constraint=10000.0,  # 高权重
         lambda_smooth=0.1,
         lambda_regularization=0.01,
