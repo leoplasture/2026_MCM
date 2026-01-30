@@ -283,10 +283,9 @@ class FinalFanVoteEstimator:
         }
 
 
-# 改进的数据准备函数
 def enhanced_prepare_season_data(season_num, raw_data, debug=False):
     """
-    增强的数据准备函数
+    增强的数据准备函数 - 基于评委N/A情况判断停播
     """
     season_data = raw_data[raw_data["season"] == season_num].copy()
     season_data = season_data.reset_index(drop=True)
@@ -294,22 +293,100 @@ def enhanced_prepare_season_data(season_num, raw_data, debug=False):
     contestant_names = season_data["celebrity_name"].tolist()
     N = len(contestant_names)
 
-    # 确定最大周数
-    max_week = 0
+    # 首先，找出数据中涉及的所有周数
+    all_weeks = set()
     for col in season_data.columns:
         if "week" in col and "judge" in col:
             try:
-                week_num = int(col.split("_")[0].replace("week", ""))
-                max_week = max(max_week, week_num)
+                week_str = col.split("_")[0].replace("week", "")
+                week_num = int(week_str)
+                all_weeks.add(week_num)
             except:
                 continue
 
-    # 初始化评委分数矩阵
-    X = np.zeros((N, max_week))
+    if not all_weeks:
+        if debug:
+            print(f"No week columns found for season {season_num}")
+        return None, None, None, None
+
+    max_theoretical_week = max(all_weeks)
+
+    if debug:
+        print(f"Theoretical max week from columns: {max_theoretical_week}")
+        print(f"All weeks found: {sorted(all_weeks)}")
+
+    # 检测停播周：找到第一个所有评委分数都是N/A的周
+    actual_max_week = max_theoretical_week  # 默认到最大周数
+
+    for week in sorted(all_weeks):
+        # 获取本周的所有评委列
+        judge_cols = [
+            col
+            for col in season_data.columns
+            if f"week{week}_" in col and "judge" in col
+        ]
+
+        if not judge_cols:
+            continue
+
+        # 检查是否有非N/A的评委分数
+        week_has_valid_data = False
+
+        # 随机检查几个选手（不需要检查所有选手）
+        sample_indices = list(range(min(5, N)))  # 检查前5个选手
+
+        for i in sample_indices:
+            for col in judge_cols:
+                score = season_data.at[i, col]
+                if pd.isna(score) or score == "N/A" or score == 0:
+                    continue
+                try:
+                    score_val = float(score)
+                    if score_val > 0:
+                        week_has_valid_data = True
+                        break
+                except:
+                    continue
+            if week_has_valid_data:
+                break
+
+        # 如果本周所有评委分数都是N/A，则赛季到此结束
+        if not week_has_valid_data:
+            # 再详细检查确认
+            all_na_confirmed = True
+            for i in range(N):
+                for col in judge_cols:
+                    score = season_data.at[i, col]
+                    if not pd.isna(score) and score != "N/A" and score != 0:
+                        try:
+                            if float(score) > 0:
+                                all_na_confirmed = False
+                                break
+                        except:
+                            all_na_confirmed = False
+                            break
+                if not all_na_confirmed:
+                    break
+
+            if all_na_confirmed:
+                actual_max_week = week - 1  # 赛季实际结束于上一周
+                if debug:
+                    print(f"  Week {week}: All judge scores are NA")
+                    print(f"  Season ends at week {actual_max_week}")
+                break
+
+    # 确保actual_max_week至少为1
+    actual_max_week = max(1, actual_max_week)
+
+    if debug:
+        print(f"Actual max week (after NA detection): {actual_max_week}")
+
+    # 初始化评委分数矩阵（只到实际最大周数）
+    X = np.zeros((N, actual_max_week))
 
     # 填充评委分数
     for i in range(N):
-        for week in range(1, max_week + 1):
+        for week in range(1, actual_max_week + 1):
             week_cols = [col for col in season_data.columns if f"week{week}_" in col]
             week_total = 0
             judge_count = 0
@@ -327,45 +404,106 @@ def enhanced_prepare_season_data(season_num, raw_data, debug=False):
 
             if judge_count > 0:
                 X[i, week - 1] = week_total / judge_count
-            elif week > 1:
+            elif week > 1 and X[i, week - 2] > 0:
                 # 用前一周分数填充
                 X[i, week - 1] = X[i, week - 2]
 
-    # 解析淘汰信息（改进版本）
+    # 解析淘汰信息
     elimination_info = []
+    finalists = []
 
+    # 找出决赛选手
     for i in range(N):
         result = str(season_data.at[i, "results"])
 
-        # 处理各种结果格式
         if "1st" in result or "Winner" in result or "Champion" in result:
-            # 冠军：最后一周不被淘汰
-            elim_week = max_week - 1
-        elif "2nd" in result or "3rd" in result:
-            # 亚军/季军：决赛周被淘汰
-            elim_week = max_week - 1
-        elif "Withdrew" in result or "withdrew" in result:
-            # 退赛：找到第一个0分周
-            elim_week = max_week - 1
-            for week in range(1, max_week):
-                if X[i, week] == 0 and X[i, week - 1] > 0:
-                    elim_week = week - 1
+            finalists.append(
+                {"index": i, "name": contestant_names[i], "place": 1, "result": result}
+            )
+        elif "2nd" in result:
+            finalists.append(
+                {"index": i, "name": contestant_names[i], "place": 2, "result": result}
+            )
+        elif "3rd" in result:
+            finalists.append(
+                {"index": i, "name": contestant_names[i], "place": 3, "result": result}
+            )
+        elif "4th" in result or "5th" in result:
+            finalists.append(
+                {"index": i, "name": contestant_names[i], "place": 4, "result": result}
+            )
+
+    # 确定决赛周：通常是最后一个实际比赛周
+    final_week = actual_max_week - 1
+
+    # 尝试从结果中推断决赛周
+    for f in finalists:
+        result = f["result"]
+        if "Week" in result:
+            import re
+
+            week_match = re.search(r"Week\s*(\d+)", result)
+            if week_match:
+                week_candidate = int(week_match.group(1))
+                if week_candidate <= actual_max_week:
+                    final_week = week_candidate - 1
+                    if debug:
+                        print(f"  Final week from {f['name']}: Week {final_week + 1}")
+
+    # 为所有选手分配淘汰周次
+    for i in range(N):
+        result = str(season_data.at[i, "results"])
+
+        # 检查是否是决赛选手
+        is_finalist = any(f["index"] == i for f in finalists)
+
+        if is_finalist:
+            # 决赛选手
+            for f in finalists:
+                if f["index"] == i:
+                    if f["place"] == 1:
+                        # 冠军：不加入淘汰列表
+                        elim_week = final_week
+                        is_champion = True
+                    else:
+                        # 其他决赛选手：在决赛周被淘汰
+                        elim_week = final_week
+                        is_champion = False
                     break
+        elif "Withdrew" in result or "withdrew" in result:
+            # 退赛：找到最后一个有分数的周
+            elim_week = final_week
+            last_active_week = -1
+            for week in range(actual_max_week):
+                if X[i, week] > 0:
+                    last_active_week = week
+
+            if last_active_week >= 0:
+                # 退赛选手在最后一个活跃周之后被淘汰
+                elim_week = min(last_active_week, final_week - 1)
+
         elif "Eliminated" in result:
             # 提取淘汰周数
             import re
 
-            week_match = re.search(r"(\d+)", result)
+            week_match = re.search(r"Week\s*(\d+)", result)
             if week_match:
                 elim_week = int(week_match.group(1)) - 1
+                # 确保淘汰周在实际比赛周数内
+                if elim_week >= actual_max_week:
+                    if debug:
+                        print(
+                            f"  Warning: {contestant_names[i]} eliminated in week {elim_week + 1} > actual max week {actual_max_week}"
+                        )
+                    elim_week = min(elim_week, actual_max_week - 1)
             else:
-                elim_week = max_week - 1
+                elim_week = final_week
         else:
-            # 默认：最后一周
-            elim_week = max_week - 1
+            # 其他情况
+            elim_week = final_week
 
         # 确保周数有效
-        elim_week = max(0, min(elim_week, max_week - 1))
+        elim_week = max(0, min(elim_week, actual_max_week - 1))
 
         elimination_info.append(
             {
@@ -373,21 +511,23 @@ def enhanced_prepare_season_data(season_num, raw_data, debug=False):
                 "elim_week": elim_week,
                 "name": contestant_names[i],
                 "result": result,
+                "is_champion": is_champion if is_finalist else False,
+                "is_finalist": is_finalist,
             }
         )
 
     # 排序：按淘汰周次，同周按评委分数
-    elimination_info.sort(
-        key=lambda x: (x["elim_week"], -X[x["index"], x["elim_week"]])
-    )
+    elimination_info.sort(key=lambda x: (x["elim_week"], X[x["index"], x["elim_week"]]))
 
-    # 构建淘汰顺序
+    # 构建淘汰顺序 - 冠军不加入淘汰列表
     e = []
     elimination_weeks = []
 
     for info in elimination_info:
-        # 跳过冠军
-        if "1st" in info["result"] or "Winner" in info["result"]:
+        # 冠军不加入淘汰列表
+        if info.get("is_champion", False):
+            if debug:
+                print(f"  Skipping champion: {info['name']}")
             continue
 
         e.append(info["index"])
@@ -396,18 +536,40 @@ def enhanced_prepare_season_data(season_num, raw_data, debug=False):
     e = np.array(e)
     elimination_weeks = np.array(elimination_weeks)
 
-    # 确定实际处理的周数
+    # 确定模型需要处理的周数
     if len(elimination_weeks) > 0:
         T = max(elimination_weeks) + 1
     else:
-        T = max_week
+        T = actual_max_week
 
-    X = X[:, :T]
+    # 如果T小于实际周数，截断X
+    if T < actual_max_week:
+        X = X[:, :T]
 
     if debug:
-        print(f"\nSeason {season_num}: {N} contestants, {T} weeks")
-        print(f"Elimination weeks (1-based): {elimination_weeks + 1}")
-        print(f"Elimination order: {[contestant_names[idx] for idx in e]}")
+        print(f"\nFinal Processing Summary for Season {season_num}:")
+        print(f"  Contestants: {N}")
+        print(f"  Actual max week: {actual_max_week}")
+        print(f"  Model weeks: {T}")
+        print(f"  Final week: {final_week + 1}")
+        print(f"  Eliminations: {len(e)}")
+
+        if len(e) > 0:
+            print(f"  Elimination weeks (1-based): {elimination_weeks + 1}")
+            print(f"  Elimination order: {[contestant_names[idx] for idx in e]}")
+
+        # 显示淘汰详情
+        print(f"\nElimination details:")
+        for info in elimination_info:
+            if info.get("is_champion", False):
+                status = "Champion"
+            elif info.get("is_finalist", False):
+                status = "Finalist"
+            else:
+                status = "Eliminated"
+
+            if status != "Champion":  # 冠军已跳过
+                print(f"  {info['name']:20s}: {status} in Week {info['elim_week'] + 1}")
 
     return X, e, contestant_names, elimination_weeks
 
@@ -420,7 +582,9 @@ def analyze_with_final_model(season_num):
 
     # 准备数据（使用之前的数据准备函数）
 
-    X, e, names, elimination_weeks = enhanced_prepare_season_data(season_num, raw_data)
+    X, e, names, elimination_weeks = enhanced_prepare_season_data(
+        season_num, raw_data, debug=True
+    )
 
     if len(e) == 0:
         print("No elimination data.")
