@@ -1,0 +1,103 @@
+D:\anaconda\python.exe C:\Users\lenovo\Desktop\start\modeling\problemC\problem3.py 
+Aggregating estimated fan votes...
+Loading original characteristics and calculating judge averages...
+Detailed feature engineering...
+
+============================== JUDGE ANALYSIS ==============================
+                              OLS Regression Results                              
+==================================================================================
+Dep. Variable:     avg_season_judge_score   R-squared:                       0.366
+Model:                                OLS   Adj. R-squared:                  0.351
+Method:                     Least Squares   F-statistic:                     23.71
+Date:                    Sat, 31 Jan 2026   Prob (F-statistic):           3.37e-35
+Time:                            23:43:15   Log-Likelihood:                -622.39
+No. Observations:                     421   AIC:                             1267.
+Df Residuals:                         410   BIC:                             1311.
+Df Model:                              10                                         
+Covariance Type:                nonrobust                                         
+===============================================================================================
+                                  coef    std err          t      P>|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------------------
+const                           9.3603      0.245     38.283      0.000       8.880       9.841
+ind_grp_Athlete                -0.4794      0.150     -3.194      0.002      -0.775      -0.184
+ind_grp_Comedian               -0.9579      0.327     -2.929      0.004      -1.601      -0.315
+ind_grp_Model                  -0.9753      0.286     -3.413      0.001      -1.537      -0.414
+ind_grp_Other                  -0.4342      0.194     -2.238      0.026      -0.816      -0.053
+ind_grp_Singer/Rapper          -0.2112      0.171     -1.237      0.217      -0.547       0.124
+ind_grp_TV Personality         -0.6710      0.165     -4.069      0.000      -0.995      -0.347
+celebrity_age_during_season    -0.0512      0.004    -12.842      0.000      -0.059      -0.043
+pro_experience                  0.0377      0.008      4.468      0.000       0.021       0.054
+is_international                0.0520      0.169      0.307      0.759      -0.281       0.385
+is_big_state                   -0.2684      0.115     -2.333      0.020      -0.495      -0.042
+==============================================================================
+Omnibus:                       17.466   Durbin-Watson:                   2.019
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               18.799
+Skew:                          -0.517   Prob(JB):                     8.28e-05
+Kurtosis:                       3.036   Cond. No.                         291.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+============================== FAN ANALYSIS ==============================
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:         Estimated Vote   R-squared:                       0.129
+Model:                            OLS   Adj. R-squared:                  0.108
+Method:                 Least Squares   F-statistic:                     6.085
+Date:                Sat, 31 Jan 2026   Prob (F-statistic):           1.18e-08
+Time:                        23:43:15   Log-Likelihood:                 329.21
+No. Observations:                 421   AIC:                            -636.4
+Df Residuals:                     410   BIC:                            -592.0
+Df Model:                          10                                         
+Covariance Type:            nonrobust                                         
+===============================================================================================
+                                  coef    std err          t      P>|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------------------
+const                           0.3821      0.026     14.982      0.000       0.332       0.432
+ind_grp_Athlete                -0.0510      0.016     -3.257      0.001      -0.082      -0.020
+ind_grp_Comedian               -0.0337      0.034     -0.987      0.324      -0.101       0.033
+ind_grp_Model                  -0.1058      0.030     -3.550      0.000      -0.164      -0.047
+ind_grp_Other                  -0.0528      0.020     -2.610      0.009      -0.093      -0.013
+ind_grp_Singer/Rapper          -0.0160      0.018     -0.901      0.368      -0.051       0.019
+ind_grp_TV Personality         -0.0222      0.017     -1.292      0.197      -0.056       0.012
+celebrity_age_during_season    -0.0018      0.000     -4.369      0.000      -0.003      -0.001
+pro_experience                  0.0026      0.001      2.950      0.003       0.001       0.004
+is_international               -0.0181      0.018     -1.026      0.305      -0.053       0.017
+is_big_state                   -0.0386      0.012     -3.212      0.001      -0.062      -0.015
+==============================================================================
+Omnibus:                       29.064   Durbin-Watson:                   1.745
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               33.100
+Skew:                          -0.667   Prob(JB):                     6.49e-08
+Kurtosis:                       3.328   Cond. No.                         291.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+============================== RUNNING RANDOM FOREST ==============================
+Random Forest Plot saved as 'rf_feature_importance.png'
+
+============================== FINAL ATTRIBUTION SUMMARY (TABLE X) ==============================
+             Characteristic Judge Coef(β) Judge RF Imp. Fan Coef(β) Fan RF Imp.
+            ind_grp_Athlete    -0.4794***        0.0255  -0.0510***      0.0637
+           ind_grp_Comedian    -0.9579***        0.0224     -0.0337      0.0263
+              ind_grp_Model    -0.9753***        0.0221  -0.1058***      0.0506
+              ind_grp_Other     -0.4342**        0.0239  -0.0528***      0.0311
+      ind_grp_Singer/Rapper       -0.2112        0.0150     -0.0160      0.0204
+     ind_grp_TV Personality    -0.6710***        0.0341     -0.0222      0.0248
+celebrity_age_during_season    -0.0512***        0.5731  -0.0018***      0.4130
+             pro_experience     0.0377***        0.2330   0.0026***      0.2687
+           is_international        0.0520        0.0160     -0.0181      0.0292
+               is_big_state     -0.2684**        0.0349  -0.0386***      0.0722
+-------------------------------------------------------------------------------------
+Note: *** p<0.01, ** p<0.05, * p<0.1. Base Category: Actor/Actress
+Stats: N=421, Judge_R2(OLS/RF)=0.366/0.696, Fan_R2(OLS/RF)=0.129/0.533
+
+Table X has been saved to 'table_x_attribution_summary.csv'
+
+-------------------- KEY INSIGHTS FOR THE PAPER --------------------
+1. System Consistency: Both models identify 'celebrity_age_during_season' as the most dominant factor.
+2. Divergence: Compare the coefficients. For example, look at P-values for industry groups 
+   to see which sectors judges penalize more heavily than fans.
+3. Non-linearity: RF improved fit by 90.1% (Judge) and 312.6% (Fan).
