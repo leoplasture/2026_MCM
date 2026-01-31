@@ -1,8 +1,4 @@
 """
-DWTS Analysis Test Suite for 2026 MCM Problem C
-Author: [你的名字/团队名]
-Date: 2026-01-[当前日期]
-
 这个脚本提供了完整的测试和分析功能，包括：
 1. 全赛季分析
 2. 争议赛季深度分析
