@@ -1,0 +1,16 @@
+{
+  "weights": [
+    NaN,
+    NaN,
+    NaN,
+    NaN,
+    NaN
+  ],
+  "criteria": [
+    "historical_consistency",
+    "fan_influence",
+    "controversy_gra",
+    "stability",
+    "fairness"
+  ]
+}
