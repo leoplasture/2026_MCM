@@ -1,0 +1,70 @@
+================================================================================
+CONTROVERSIAL SEASONS - COMPARISON REPORT
+Generated: 2026-01-31 16:19:34
+================================================================================
+
+SEASON COMPARISON:
+--------------------------------------------------------------------------------
+
+Season 2: Jerry Rice
+  Issue: Runner-up despite lowest judge scores in 5 weeks
+  Recommended method: percent
+  Closeness coefficients:
+    rank: 0.3891
+    percent: 0.6250
+    rank_judges_choice: 0.0471
+  Monte Carlo Top-1 probabilities:
+    rank: 0.000 (0/500)
+    percent: 1.000 (500/500)
+    rank_judges_choice: 0.000 (0/500)
+--------------------------------------------------------------------------------
+
+Season 4: Billy Ray Cyrus
+  Issue: 5th place despite last place judge scores in 6 weeks
+  Recommended method: percent
+  Closeness coefficients:
+    rank: 0.1035
+    percent: 0.8972
+    rank_judges_choice: 0.0532
+  Monte Carlo Top-1 probabilities:
+    rank: 0.000 (0/500)
+    percent: 0.960 (480/500)
+    rank_judges_choice: 0.040 (20/500)
+--------------------------------------------------------------------------------
+
+Season 11: Bristol Palin
+  Issue: 3rd place with lowest judge scores 12 times
+  Recommended method: percent
+  Closeness coefficients:
+    rank: 0.0138
+    percent: 0.9559
+    rank_judges_choice: 0.0442
+  Monte Carlo Top-1 probabilities:
+    rank: 0.008 (4/500)
+    percent: 0.992 (496/500)
+    rank_judges_choice: 0.000 (0/500)
+--------------------------------------------------------------------------------
+
+Season 27: Bobby Bones
+  Issue: Winner despite consistently low judge scores
+  Recommended method: percent
+  Closeness coefficients:
+    rank: 0.1217
+    percent: 0.8785
+    rank_judges_choice: 0.0288
+  Monte Carlo Top-1 probabilities:
+    rank: 0.000 (0/500)
+    percent: 0.998 (499/500)
+    rank_judges_choice: 0.002 (1/500)
+--------------------------------------------------------------------------------
+
+OBSERVATIONS AND CONCLUSIONS:
+--------------------------------------------------------------------------------
+• percent method is recommended for 4/4 controversial seasons
+• These seasons demonstrate tension between judge scores and fan votes
+• The analysis helps understand which voting methods might produce different outcomes
+• Recommendations should consider both fairness and entertainment value
+
+================================================================================
+END OF COMPARISON REPORT
+================================================================================

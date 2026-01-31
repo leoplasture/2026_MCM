@@ -1,0 +1,56 @@
+{
+  "2": {
+    "entropy": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "critic": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "entropy+critic": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "equal": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    }
+  },
+  "11": {
+    "entropy": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "critic": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "entropy+critic": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "equal": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    }
+  },
+  "27": {
+    "entropy": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "critic": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "entropy+critic": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    },
+    "equal": {
+      "status": "TODO",
+      "notes": "\u9700\u8981\u6269\u5c55DWTSPipeline\u4ee5\u652f\u6301\u4e0d\u540c\u7684\u6743\u91cd\u65b9\u6cd5"
+    }
+  }
+}

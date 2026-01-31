@@ -1,0 +1,88 @@
+{
+  "method_names": [
+    "rank",
+    "percent",
+    "rank_judges_choice"
+  ],
+  "metric_names": [
+    "mean_closeness",
+    "std_closeness",
+    "top1_frequency",
+    "worst_case_cvar",
+    "divergence_score"
+  ],
+  "performance_matrix": [
+    [
+      0.01,
+      0.0,
+      0.0,
+      0.01,
+      0.4939711437773029
+    ],
+    [
+      0.9563168732091549,
+      0.03335426342093737,
+      1.0,
+      0.8565372047376438,
+      0.9255041660364296
+    ],
+    [
+      0.0516254143454508,
+      0.03900871020615511,
+      0.0,
+      0.010169316750606663,
+      0.47315843660457746
+    ]
+  ],
+  "weights": [
+    0.1850929000227845,
+    0.3029870723228802,
+    0.22761970060849643,
+    0.20901075327884222,
+    0.0752895737659966
+  ],
+  "closeness_coefficients": [
+    0.3909449814017461,
+    0.6467015036804415,
+    0.018662793224915115
+  ],
+  "rank_order": [
+    1,
+    0,
+    2
+  ],
+  "recommended_method": "percent",
+  "method_metrics": {
+    "rank": {
+      "mean_closeness": 0.01,
+      "std_closeness": 0.0,
+      "top1_frequency": 0.0,
+      "worst_case_cvar": 0.01,
+      "divergence_score": 0.4939711437773029
+    },
+    "percent": {
+      "mean_closeness": 0.9563168732091549,
+      "std_closeness": 0.03335426342093737,
+      "top1_frequency": 1.0,
+      "worst_case_cvar": 0.8565372047376438,
+      "divergence_score": 0.9255041660364296
+    },
+    "rank_judges_choice": {
+      "mean_closeness": 0.0516254143454508,
+      "std_closeness": 0.03900871020615511,
+      "top1_frequency": 0.0,
+      "worst_case_cvar": 0.010169316750606663,
+      "divergence_score": 0.47315843660457746
+    }
+  },
+  "dist_to_best": [
+    0.3587657007025847,
+    0.19690294179100715,
+    0.42299797536299366
+  ],
+  "dist_to_worst": [
+    0.23028732365091034,
+    0.36042448485491657,
+    0.00804445576329327
+  ]
+}

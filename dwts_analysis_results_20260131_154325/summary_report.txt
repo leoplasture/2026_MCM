@@ -1,0 +1,33 @@
+================================================================================
+DWTS ANALYSIS - SUMMARY REPORT
+Generated: 2026-01-31 16:17:05
+================================================================================
+
+1. OVERVIEW
+   Total seasons analyzed: 34
+   Analysis timestamp: 20260131_154325
+
+2. METHOD RECOMMENDATION SUMMARY
+   --------------------------------------------------
+   Method           Count     Percentage
+   --------------------------------------------------
+   percent              34      100.0%
+
+3. AVERAGE CLOSENESS COEFFICIENTS
+   --------------------------------------------------
+   rank            : 0.2419
+   percent         : 0.8539
+   rank_judges_choice: 0.1092
+
+4. KEY FINDINGS
+   • percent method is recommended for 100.0% of seasons
+   • Percent method shows strong performance across seasons
+
+5. RECOMMENDATIONS
+   • Consider the specific context of each season when choosing a voting method
+   • Percent method may better balance judge and fan preferences
+   • Further analysis of specific controversial cases is recommended
+
+================================================================================
+END OF REPORT
+================================================================================

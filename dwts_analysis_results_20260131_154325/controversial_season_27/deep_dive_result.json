@@ -1,0 +1,139 @@
+{
+  "season": 27,
+  "contestant_info": {
+    "name": "Bobby Bones",
+    "description": "Winner despite consistently low judge scores"
+  },
+  "analysis_result": {
+    "season": 27,
+    "method_comparison": {
+      "method_names": [
+        "rank",
+        "percent",
+        "rank_judges_choice"
+      ],
+      "metric_names": [
+        "mean_closeness",
+        "std_closeness",
+        "top1_frequency",
+        "worst_case_cvar",
+        "divergence_score"
+      ],
+      "performance_matrix": [
+        [
+          0.10035439312258237,
+          0.06165625594449741,
+          0.0,
+          0.01911003561443765,
+          0.3996456068774176
+        ],
+        [
+          0.8372505700149189,
+          0.09250548118317646,
+          0.998,
+          0.5969789141638399,
+          0.7057395082862354
+        ],
+        [
+          0.16274942998508116,
+          0.09250548118317646,
+          0.002,
+          0.033428932627820616,
+          0.3684889382713166
+        ]
+      ],
+      "weights": [
+        0.1392494084549953,
+        0.2533792131174154,
+        0.29901754820042775,
+        0.22680228777248404,
+        0.08155154245367742
+      ],
+      "closeness_coefficients": [
+        0.12173387502913036,
+        0.8784735108071009,
+        0.028779356137546504
+      ],
+      "rank_order": [
+        1,
+        0,
+        2
+      ],
+      "recommended_method": "percent",
+      "method_metrics": {
+        "rank": {
+          "mean_closeness": 0.10035439312258237,
+          "std_closeness": 0.06165625594449741,
+          "top1_frequency": 0.0,
+          "worst_case_cvar": 0.01911003561443765,
+          "divergence_score": 0.3996456068774176
+        },
+        "percent": {
+          "mean_closeness": 0.8372505700149189,
+          "std_closeness": 0.09250548118317646,
+          "top1_frequency": 0.998,
+          "worst_case_cvar": 0.5969789141638399,
+          "divergence_score": 0.7057395082862354
+        },
+        "rank_judges_choice": {
+          "mean_closeness": 0.16274942998508116,
+          "std_closeness": 0.09250548118317646,
+          "top1_frequency": 0.002,
+          "worst_case_cvar": 0.033428932627820616,
+          "divergence_score": 0.3684889382713166
+        }
+      },
+      "dist_to_best": [
+        0.3904759648501455,
+        0.05404751112529321,
+        0.3879924087085861
+      ],
+      "dist_to_worst": [
+        0.05412272084232448,
+        0.3906910103700658,
+        0.011497049387779547
+      ]
+    },
+    "monte_carlo_results": {
+      "stability": {
+        "rank": 0.0,
+        "percent": 0.998,
+        "rank_judges_choice": 0.002
+      },
+      "top_counts": {
+        "rank": 0,
+        "percent": 499,
+        "rank_judges_choice": 1
+      }
+    },
+    "recommended_method": "percent",
+    "method_names": [
+      "rank",
+      "percent",
+      "rank_judges_choice"
+    ],
+    "basic_metrics": [
+      [
+        0.01,
+        0.01,
+        0.8116067357618284,
+        0.7303465765039276,
+        0.8516483516483516
+      ],
+      [
+        0.01,
+        0.01,
+        1.0,
+        0.865294549632476,
+        0.8269230769230769
+      ],
+      [
+        0.01,
+        0.01,
+        0.8116067357618284,
+        0.7303465765039276,
+        0.8708791208791209
+      ]
+    ]
+  }
+}

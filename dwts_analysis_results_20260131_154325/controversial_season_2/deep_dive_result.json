@@ -1,0 +1,139 @@
+{
+  "season": 2,
+  "contestant_info": {
+    "name": "Jerry Rice",
+    "description": "Runner-up despite lowest judge scores in 5 weeks"
+  },
+  "analysis_result": {
+    "season": 2,
+    "method_comparison": {
+      "method_names": [
+        "rank",
+        "percent",
+        "rank_judges_choice"
+      ],
+      "metric_names": [
+        "mean_closeness",
+        "std_closeness",
+        "top1_frequency",
+        "worst_case_cvar",
+        "divergence_score"
+      ],
+      "performance_matrix": [
+        [
+          0.01,
+          0.0,
+          0.0,
+          0.01,
+          0.494205403203031
+        ],
+        [
+          0.8876152345696537,
+          0.07812582098609869,
+          1.0,
+          0.6676673737104815,
+          0.8222174486514495
+        ],
+        [
+          0.12079557183640835,
+          0.08280000057179349,
+          0.0,
+          0.02037811110250106,
+          0.4388076172848268
+        ]
+      ],
+      "weights": [
+        0.16181260140977266,
+        0.30895083220450253,
+        0.24038177642640202,
+        0.2054108624824146,
+        0.08344392747590802
+      ],
+      "closeness_coefficients": [
+        0.3891402032639433,
+        0.6250079483547233,
+        0.04711338906597681
+      ],
+      "rank_order": [
+        1,
+        0,
+        2
+      ],
+      "recommended_method": "percent",
+      "method_metrics": {
+        "rank": {
+          "mean_closeness": 0.01,
+          "std_closeness": 0.0,
+          "top1_frequency": 0.0,
+          "worst_case_cvar": 0.01,
+          "divergence_score": 0.494205403203031
+        },
+        "percent": {
+          "mean_closeness": 0.8876152345696537,
+          "std_closeness": 0.07812582098609869,
+          "top1_frequency": 1.0,
+          "worst_case_cvar": 0.6676673737104815,
+          "divergence_score": 0.8222174486514495
+        },
+        "rank_judges_choice": {
+          "mean_closeness": 0.12079557183640835,
+          "std_closeness": 0.08280000057179349,
+          "top1_frequency": 0.0,
+          "worst_case_cvar": 0.02037811110250106,
+          "divergence_score": 0.4388076172848268
+        }
+      },
+      "dist_to_best": [
+        0.35281241191350937,
+        0.21202648256809514,
+        0.4098707577930402
+      ],
+      "dist_to_worst": [
+        0.22475450900524183,
+        0.35338945528566595,
+        0.020265160888124176
+      ]
+    },
+    "monte_carlo_results": {
+      "stability": {
+        "rank": 0.0,
+        "percent": 1.0,
+        "rank_judges_choice": 0.0
+      },
+      "top_counts": {
+        "rank": 0,
+        "percent": 500,
+        "rank_judges_choice": 0
+      }
+    },
+    "recommended_method": "percent",
+    "method_names": [
+      "rank",
+      "percent",
+      "rank_judges_choice"
+    ],
+    "basic_metrics": [
+      [
+        0.01,
+        0.01,
+        0.501803390396086,
+        0.7254545454572909,
+        0.8848484848484848
+      ],
+      [
+        0.01,
+        0.01,
+        1.0,
+        0.8200594762572089,
+        0.8909090909090909
+      ],
+      [
+        0.01,
+        0.01,
+        0.501803390396086,
+        0.7254545454572909,
+        0.9575757575757575
+      ]
+    ]
+  }
+}
